@@ -18,14 +18,14 @@ jobs:
                 
 
             - name: build and test (maven)
-              working-directory: docker/app1-hello/springboot/hello-spring
+              working-directory: springboot/hello-spring
               run: mvn -B clean verify
 
             - name: upload test report
               uses: actions/upload-artifact@v7
               with:
                 name: test-repports
-                path: docker/app1-hello/springboot/hello-spring/target/surefire-reports
+                path: springboot/hello-spring/target/surefire-reports
 
     docker-build-push:
         runs-on: ubuntu-latest
@@ -56,9 +56,9 @@ jobs:
             - name: Build and push
               uses: docker/build-push-action@v7
               with:
-                context: docker/app1-hello/springboot/hello-spring
+                context: springboot/hello-spring
                 push: true
                 tags: |
                       ${{ secrets.DOCKER_USERNAME }}/hello-spring:latest
-                      ${{ secrets.DOCKER_USERNAME }}/hello-spring:{{ github.sha }}
-                      ${{ secrets.DOCKER_USERNAME }}/hello-spring:{{ github.ref_name }}
+                      ${{ secrets.DOCKER_USERNAME }}/hello-spring:${{ github.sha }}
+                      ${{ secrets.DOCKER_USERNAME }}/hello-spring:${{ github.ref_name }}
